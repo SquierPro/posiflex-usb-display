@@ -26,8 +26,23 @@ ep = usb.util.find_descriptor(intf,custom_match = \
 
 str=sys.argv[1]
 
+# SLOW MODE:
+#for i in str:
+#     ep.write('1'+i)
+
+#FAST MODE:
+n=0
+st=''
+
 for i in str:
-     ep.write('1'+i)
+    n+=1
+    st+=i
+    if n%7==0: 
+	ep.write('7'+st)
+	st=''
+    if n==len(str):
+        ep.write('7'+st)
+#more 7symbols dont work
 
 # This is needed to release interface, otherwise attach_kernel_driver fails 
 # due to "Resource busy"
